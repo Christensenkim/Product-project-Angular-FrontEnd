@@ -1,0 +1,29 @@
+<form [formGroup]="productForm" (ngSubmit)="Save()">
+  <label>
+    Product Name:
+    <input type="text" formControlName="name">
+  </label>
+
+  <label>
+    price:
+    <input type="text" formControlName="price">
+  </label>
+
+  <label>
+    color:
+    <input type="text" formControlName="color">
+  </label>
+
+  <label>
+    product type:
+    <input type="text" formControlName="ptype">
+  </label>
+
+  <label>
+    Created:
+    <input type="text" formControlName="createdDate">
+  </label>
+
+  <button type="submit">Save</button>
+
+</form>

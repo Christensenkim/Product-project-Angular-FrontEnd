@@ -1,0 +1,12 @@
+<h1>Products Details</h1>
+<div *ngIf="product">
+  <h2>{{product.id}}</h2>
+  <h3>{{product.name}}</h3>
+  <h4>{{product.price}}</h4>
+</div>
+<div *ngIf="!product">
+  <h2>Product not Found</h2>
+</div>
+
+
+
