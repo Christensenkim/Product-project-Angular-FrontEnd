@@ -7,9 +7,11 @@ import {ProductCreateComponent} from './products/product-create/product-create.c
 import {ProductUpdateComponent} from './products/product-update/product-update.component';
 import {AuthGuardGuard} from './Shared/guards/auth-guard.guard';
 import {LoginComponent} from './Authentication/Login/login.component';
+import {ProductsListComponent} from './products/products-list/products-list.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
+  {path: 'list', component: ProductsListComponent, canActivate: [AuthGuardGuard]},
   {path: '', component: WelcomeComponent, canActivate: [AuthGuardGuard]},
   {path: 'product/:id', component: ProductsDetailsComponent, canActivate: [AuthGuardGuard]},
   {path: 'create', component: ProductCreateComponent, canActivate: [AuthGuardGuard]},

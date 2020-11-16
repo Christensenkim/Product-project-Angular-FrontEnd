@@ -2,23 +2,22 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {environment} from '../../../environments/environment';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   login(userName: string, password: string): Observable<boolean>{
-    this.logout();
-    return this.http.post<any>('https://localhost:44317/api/token', {userName, password})
+    return this.http.post<any>('https://productprojekt.azurewebsites.net/api/token', {userName, password})
       .pipe(map(response => {
-      const token = response && response.token;
+      const token = response.token;
 
       if (token){
-        localStorage.setItem('currentUser', JSON.stringify({userName, token}));
+        localStorage.setItem('currentUser', JSON.stringify({username: userName, token: token}));
         return true;
       }else{
         return false;
@@ -27,12 +26,10 @@ export class AuthenticationService {
   }
 
   getToken(): string {
-    debugger;
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (currentUser)
     {
-      debugger;
-      return currentUser && currentUser.token;
+      return currentUser.token;
     }else {
       return null;
     }
@@ -41,7 +38,7 @@ export class AuthenticationService {
   getUsername(): string{
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (currentUser) {
-      return currentUser && currentUser.username;
+      return currentUser.username;
     } else {
       return null;
     }
@@ -49,5 +46,6 @@ export class AuthenticationService {
 
   logout(): void{
     localStorage.removeItem('currentUser');
+    this.router.navigateByUrl('login');
   }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Product} from '../../Shared/Models/Products';
 import {ProductsService} from '../../Shared/Service/products.service';
+import {AuthenticationService} from '../../Shared/Service/authentication.service';
 
 @Component({
   selector: 'app-products-list',
@@ -8,17 +9,22 @@ import {ProductsService} from '../../Shared/Service/products.service';
   styleUrls: ['./products-list.component.css']
 })
 export class ProductsListComponent implements OnInit {
-
-
-  constructor(private productService: ProductsService) { }
-
   products: Product[];
+  username: string;
+  errormessage: string = '';
+
+  constructor(private productService: ProductsService, private authService: AuthenticationService) {
+    this.username = authService.getUsername();
+  }
 
   ngOnInit(): void {
     this.productService.getProducts()
-      .subscribe(listOfProducts => {
+      .subscribe(
+        listOfProducts => {
       this.products = listOfProducts;
-    });
+    },
+        error => {this.errormessage = error.message;
+        });
   }
 
   delete(id: number): void {

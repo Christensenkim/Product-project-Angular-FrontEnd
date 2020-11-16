@@ -8,7 +8,7 @@ import {environment} from '../../../environments/environment';
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json',
-    Authorization: 'my-auth-token'
+    'Authorization': 'my-auth-token'
   })
 };
 
@@ -21,15 +21,17 @@ export class ProductsService {
   constructor(private http: HttpClient, private authenticationService: AuthenticationService) { }
 
   getProducts(): Observable<Product[]>{
-    debugger;
     httpOptions.headers =
-      httpOptions.headers.set('Authorization', 'Bearer' + this.authenticationService.getToken());
-    return this.http.get<Product[]>('https://localhost:44317/api/product', httpOptions);
-    debugger;
+      httpOptions.headers.set('Authorization', 'Bearer ' + this.authenticationService.getToken());
+
+    return this.http.get<Product[]>('https://productprojekt.azurewebsites.net/api/product/', httpOptions);
   }
 
-  getProductById(id: number): Product{
-    return this.products.find(cust => cust.id === id);
+  getProductById(id: number): Observable<Product>{
+    httpOptions.headers =
+      httpOptions.headers.set('Authorization', 'Bearer ' + this.authenticationService.getToken());
+
+    return this.http.get<Product>('https://productprojekt.azurewebsites.net/api/product/' + id, httpOptions);
   }
 
   createProduct(product: Product): void {
@@ -37,12 +39,14 @@ export class ProductsService {
   }
 
   updateProduct(product: Product): void {
-    const productToUpdate = this.products.find(prod => product.id === prod.id);
-    const index = this.products.indexOf(productToUpdate);
-    this.products[index] = product;
+
   }
 
-  deleteProduct(id: number): void {
-    this.products = this.products.filter(prod => prod.id !== id);
+  deleteProduct(id: number): Observable<Product[]> {
+    httpOptions.headers =
+      httpOptions.headers.set('Authorization', 'Bearer ' + this.authenticationService.getToken());
+
+    this.http.delete('https://localhost:44317/api/product/' + id, httpOptions);
+    return this.getProducts();
   }
 }

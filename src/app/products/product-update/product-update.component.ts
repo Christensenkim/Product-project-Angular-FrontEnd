@@ -23,7 +23,7 @@ export class ProductUpdateComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit(): void {
-    this.id = +this.route.snapshot.paramMap.get('id');
+    /*this.id = +this.route.snapshot.paramMap.get('id');
     const product = this.productService.getProductById(this.id);
     this.productForm.patchValue({
       name: product.name,
@@ -31,7 +31,7 @@ export class ProductUpdateComponent implements OnInit {
       color: product.color,
       ptype: product.ptype,
       createdDate: product.createdDate
-    });
+    });*/
   }
 
   Save(): void {
